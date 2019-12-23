@@ -15,6 +15,6 @@ public class startBtnCode : MonoBehaviour
         
     }
     public void goToGameScene(){
-        SceneManager.LoadScene("SetupProfileScene");
+        SceneManager.LoadScene("Scene2");
     }
 }

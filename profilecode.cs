@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class profilecode : MonoBehaviour{
     public Text officialName;
@@ -10,36 +11,37 @@ public class profilecode : MonoBehaviour{
     public GameObject guideBtn;
     public GameObject girlButton;
     public GameObject boyButton;
-    public bool lookingForGirls;
-    public bool lookingForBoys;
+    public static bool lookingForWomen;
+    public static bool lookingForMen;
+    public bool womenSelected;
+    public bool menSelected;
     int num = 0;
 
     // Start is called before the first frame update
     void Start(){
-        lookingForGirls = false;
-        lookingForBoys = false;
+
     }
 
     //SETTERS
     public void setWomenChosen(bool a)
     {
-        lookingForGirls = a;
+        lookingForWomen = a;
     }
 
     public void setMenChosen(bool a)
     {
-        lookingForBoys = a;
+        lookingForMen = a;
     }
 
     //GETTERS
     public bool getWomenChosen()
     {
-        return lookingForGirls;
+        return lookingForWomen ;
     }
 
     public bool getMenChosen()
     {
-        return lookingForBoys;
+        return lookingForMen;
     }
 
     //Keeps track of the intro dialog
@@ -52,13 +54,16 @@ public class profilecode : MonoBehaviour{
         "What is your name?", "Awesome! Nice to meet you " + name + "!",
         "What a nice name..." + name ,
         "Now, what are you looking for?",
-        "Awesome!"};
+        "Awesome!",
+        "Well, that's all I need to know... let me just use this info to bring up potential candidates. One moment please!",
+        ""};
         string currDialog = dialog[num];
         dialogText.text = currDialog;
 
         if (num == dialog.Length - 1){ //ensures dialog doesn't go out of bournds
             num = dialog.Length - 1;
-            Debug.Log("Dialog is done!");
+            Debug.Log("Next Scene!");
+            SceneManager.LoadScene("ChooseADate");
         }else{
             num++;
             Debug.Log(num);
@@ -75,29 +80,20 @@ public class profilecode : MonoBehaviour{
         if (num == 8){
             girlButton.SetActive(true);
             boyButton.SetActive(true);
-            guideBtn.SetActive(false);
+            
+        } 
 
-        } else{
+        if (num == 9)
+        {
             girlButton.SetActive(false);
             boyButton.SetActive(false);
-            guideBtn.SetActive(true);
         }
+
+        
     } //End of guide button code
 
-    //Methods for choosing who the player is looking for 
-    public void makeWomenTrue() {
-        setWomenChosen(true);
-        setMenChosen(false);
-        dialogText.text = "You've decided you want to look for women! Press continue if this is correct...";
-        Debug.Log("The player is now looking for women!");
+    void Update(){
+        womenSelected = lookingForWomen ;
+        menSelected = lookingForMen;
     }
-
-    public void makeMenTrue(){
-        setMenChosen(true);
-        setWomenChosen(false);
-        dialogText.text = "You've decided you want to look for men! Press continue if this is correct...";
-        Debug.Log("The player is now looking for men!");
-    }
-
-    
 }
